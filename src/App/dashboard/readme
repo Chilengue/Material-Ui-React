@@ -1,0 +1,9 @@
+
+    // <div>
+    //   <p>Dashboard</p>
+    //   <p>{usuarioLogadoContext.emailDoUsuario}</p>
+    //   <p>{usuarioLogadoContext.nomeDoUsuario}</p>
+    //   <p>contador:{counteref.current.counter}</p>
+    //   <button onClick={() => counteref.current.counter++}>somar </button>
+    //   <Link to="/login">login</Link>
+    // </div>
