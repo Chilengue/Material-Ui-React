@@ -8,6 +8,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  useMediaQuery,
   useTheme,
 } from "@mui/material";
 
@@ -17,9 +18,10 @@ interface IMenuLateral {
 
 export const MenuLateral: React.FC<IMenuLateral> = ({ children }) => {
   const theme = useTheme();
+  const  smDown=useMediaQuery(theme.breakpoints.down);
   return (
     <>
-      <Drawer variant="permanent">
+      <Drawer open={true} variant={smDown ? 'temporary' : 'permanent'}>
         <Box
           width={theme.spacing(28)}
           display="flex"
