@@ -11,7 +11,40 @@ import {
   useMediaQuery,
   useTheme,
 } from "@mui/material";
+import { useDrawerContext } from "../context";
+import { useMatch, useNavigate, useResolvedPath } from "react-router-dom";
 
+interface IListemLinkProps {
+  to: string;
+  label: string;
+  icon: string;
+  onClick: (() => void) | undefined;
+}
+const ListItemLink: React.FC<IListemLinkProps> = ({
+  to,
+  label,
+  icon,
+  onClick,
+}) => {
+  const navigate = useNavigate();
+
+  const resolvedPath = useResolvedPath(to); //resolve routas
+  const match = useMatch({ path: resolvedPath.pathname, end: false });
+
+  const handleClick = () => {
+    onClick?.();
+    navigate(to);
+  };
+
+  return (
+    <ListItemButton Selection={match} onClick={handleClick}>
+      <ListItemIcon>
+        <Icon>Home</Icon>
+      </ListItemIcon>
+      <ListItemText primary="home" />
+    </ListItemButton>
+  );
+};
 
 interface IMenuLateral {
   children: React.ReactNode;
@@ -19,10 +52,17 @@ interface IMenuLateral {
 
 export const MenuLateral: React.FC<IMenuLateral> = ({ children }) => {
   const theme = useTheme();
-  const  smDown=useMediaQuery(theme.breakpoints.down);
+  const smDown = useMediaQuery(theme.breakpoints.down);
+
+  const { isDrawerOpen, toggleDrawerOpen } = useDrawerContext();
+
   return (
     <>
-      <Drawer open={true} variant={smDown ? 'temporary' : 'permanent'}>
+      <Drawer
+        open={isDrawerOpen}
+        variant={smDown ? "temporary" : "permanent"}
+        onClose={toggleDrawerOpen}
+      >
         <Box
           width={theme.spacing(28)}
           display="flex"
@@ -45,17 +85,17 @@ export const MenuLateral: React.FC<IMenuLateral> = ({ children }) => {
           <Divider />
           <Box flex={1}>
             <List component="nav">
-              <ListItemButton>
-                <ListItemIcon>
-                  <Icon>Home</Icon>
-                </ListItemIcon>
-                <ListItemText primary="Home" />
-              </ListItemButton>
+              <ListItemLink
+                icon="home"
+                to="/pagina-inicial"
+                label="pagina inicial"
+                onClick={smDown ? toggleDrawerOpen : undefined}
+              />
             </List>
           </Box>
         </Box>
       </Drawer>
-      <Box height="100vh" marginLeft={smDown ? 0 :theme.spacing(20)}>
+      <Box height="100vh" marginLeft={smDown ? 0 : theme.spacing(29)}>
         {children}
       </Box>
     </>
